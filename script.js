@@ -5,6 +5,8 @@ const randomRecipe = document.createElement('div')
 const favorite = document.querySelector('.favorite')
 const favoriteMeal = document.querySelector('.favorite-meal')
 const mealPopUp = document.getElementById('meal-popup')
+// const showAll = document.querySelector('.show-all-fav');
+
 let state ;
 
 
@@ -35,6 +37,7 @@ async function getMealBySearch(search){
 
 }
 
+//  SERCH 
 async function serchEvent(){
     const searchInput = document.querySelector('input')
     const inputValue = searchInput.value;
@@ -72,9 +75,6 @@ search.addEventListener('keypress', (e)=>{
 
 // ADD RANDOM MEAL TO PAGE
  function addRecipe(recipe,span){
-    // const name = recipe.strMeal
-    // const img = recipe.strMealThumb
-    // const mealId = recipe.idMeal
     random.classList.add('random')
     randomRecipe.classList.add('random-recipe')
     randomRecipe.innerHTML += `<div  id="${recipe.idMeal}"class='meal-contain'>
@@ -88,7 +88,6 @@ search.addEventListener('keypress', (e)=>{
      </div>
      </div>`
     document.getElementById('recipeContainer').appendChild(randomRecipe)
-    // document.querySelector('.random').appendChild(randomRecipe)
     const heart = randomRecipe.querySelectorAll('.random-recipe .fa-regular')
     const image = document.querySelectorAll('.img-random')
   
@@ -103,47 +102,9 @@ console.log(a)
         showMealInfo(meal)
 
     })
-    // elm.addEventListener('mouseover',()=>{
-    //     // spn.innerText = 'click me'
-    //     elm.style.opacity = '.5'
-    //     spn.style.display = 'none'
-
-    // })
-    // elm.addEventListener('mouseout',()=>{
-    //     elm.style.opacity = '1'
-    //     spn.style.display = 'block'
-
-
-    // })
+ 
 })
-// console.log(heart)
-// heart.addEventListener('click',()=>{
-//     console.log(recipe)
-//     if(heart.classList.contains('fa-regular')){
-//         addMealLS(recipe.idMeal)
-//         heart.classList.remove('fa-regular')
-//         console.log(recipe)
-//         fav.innerHTML=''
-//         // addMealToFav(recipe)
-//         fetchFavMeal()
-//         state = true;
-//     }
-//     else{
-//         removeMealLs(recipe.idMeal)
-//         heart.classList.add('fa-regular')
-//         // const parent = document.querySelector('.fav-recipe').chi
-//         // console.log(parent)
-//         const id = document.getElementById(recipe.idMeal)
-//         if(id.classList.contains('fav-meal')){
-//             // console.log(id.classList.contains('fav-meal'))
-//             id.remove()
 
-//         }
-//         }
-// })
-
-    // CHANGE COLOR OF HEART WHEN CLICK 
-    // console.log(recipe)
 
     heart.forEach(a=>{
         a.addEventListener('click',async (e)=>{
@@ -152,12 +113,13 @@ console.log(a)
              const meal = await getMealById(mealId)
 
             if(a.classList.contains('fa-regular')){
+                
                 addMealLS(meal.idMeal)
+              addMealToFav(meal)
+          
+                // fetchFavMeal()
                 a.classList.remove('fa-regular')
-                fav.innerHTML=''
-                // addMealToFav(recipe)
-
-                fetchFavMeal()
+              
                 state = true;
             }
             else{
@@ -166,28 +128,26 @@ console.log(a)
                 const id = document.getElementById(mealId)
                 if(id.classList.contains('fav-meal')){
                     id.remove()
-                    fav.innerHTML=''
-                    fetchFavMeal()
+                    // favorite.innerHTML=''
+                    // fetchFavMeal()
 
                   
 
                 }
                 }
+                
             })
     })
 }
-// ALL FAV MEALS
-
 
 // ADD MEAL TO FAV MEAL
  function addMealToFav(meal){
     
     
-    // const img = meal.strMealThumb
-    // const mealId = meal.idMeal
+
         fav.classList.add('fav-recipe')
         fav.innerHTML += `<div  class='fav-meal'id='${meal.idMeal}'>
-        <button  class='clear'><i class='fa fa-x fa-2xs'></i></button>
+        <span  class='clear'><i class='fa fa-x fa-2xs'></i></span>
         <img  class='img-fav'src="${meal.strMealThumb}">
         <h5>${meal.strCategory}</h5></div>`
 
@@ -210,31 +170,7 @@ console.log(a)
             })
         })
               
-    //   showMealInfo(id,img,name,description)
-    // //   showMealInfo(b)
-            
-    //         })
-    //         imgText.addEventListener('mouseover',()=>{
-    //             a.style.pointerEvents = 'all'
-    //             imgText.style.opacity = '.1'
-    //             imgText.innerHTML+='<p>click here</p>'
-
-    //         })
-    //         imgText.addEventListener('mouseout',()=>{
-    //             // a.style.pointerEvents = 'all'
-    //             imgText.style.opacity = '1'
-
-    //         })
-    //     })
-    //     favoriteC.forEach(a =>{
-    //         const clear = a.childNodes[0];
-    //         clear.addEventListener('click',()=>{
-    //             removeMealLs(a.id)
-    //             const i = document.getElementById(a.id)
-    //             i.remove()
-                
-    //         })
-    //      })
+ 
     lc.forEach(a=>{
         a.addEventListener('click',async ()=>{
             const meal = await getMealById(a.parentElement.id)
@@ -266,10 +202,14 @@ async function showMealInfo(meal){
     }
  
     mealPopUp.innerHTML+=`<div class="meal-show" id='${meal.idMeal}'>
-    <button class="close-popup" id="close-popup">
-        <i class="fa fa-times"></i>
-    </button>
+  
+    <div class='d-flex justify-content-between'>
     <h3>${meal.strMeal}</h3>
+    <span class="close-popup" id="close-popup">
+        <i class="fa fa-times"></i>
+    </span>
+    </div>
+    
     <div class="meal-img">
         <img src="${meal.strMealThumb}" alt="">
     </div>
@@ -295,6 +235,7 @@ mealPopUp.innerHTML=''
         
     
 }
+
 // REMOVE MEAL FROM FAV
 function removeMealToFav(id,meal){  
     
@@ -325,8 +266,9 @@ function addMealLS(mealId){
 // GET MEAL FROM LOCAL STORAGE
 function getMealLS(){
     const mealIds = JSON.parse(localStorage.getItem('mealId'))
-    return mealIds === null ? [] : mealIds;
+    return mealIds === null ? []: mealIds;
 }
+
 
 // REMOVE MEAL FROM LOCAL STORAGE
 function removeMealLs(mealId){
@@ -336,18 +278,37 @@ function removeMealLs(mealId){
 }
 
 // FETCH MEAL BY ID FROM API
+
 async function fetchFavMeal(){
     const meals = []
+    
    const mealIds = getMealLS()
-   let newMealIds = mealIds.slice(Math.max(mealIds.length - 5, 0))
-   for(let i=0;i<newMealIds.length;i++){
-       const mealId = newMealIds[i]
-    meal =  await getMealById(mealId)
-    addMealToFav(meal)
+   if(mealIds.length === 0){
+    favorite.innerHTML = `<h6 class='text-muted p-4'>you have not added any meal</h6>`;
    }
+   
+   else{
+    for(let i=0;i<mealIds.length;i++){
+        const mealId = mealIds[i]
+     let meal =  await getMealById(mealId)
+     addMealToFav(meal)
+    }
+   }
+   console.log(mealIds);
+  
+   
 }
 
-
+// SHOW ALL FAV 
+// showAll.addEventListener('click',()=>{
+//     favorite.classList.toggle('show-all');
+//     if (!favorite.classList.contains('show-all')){
+//         showAll.innerText = 'show more'
+//     }
+//     else{
+//         showAll.innerText = 'show less'
+//     }
+// })
 
 
 // SCROLL FAV MEAL 
@@ -355,98 +316,4 @@ let pressed = false;
 let startX;
 let x;
 
-// favorite.addEventListener('mousedown',(e)=>{
-//     pressed = true;
-//     startX = e.offsetX - fav.offsetLeft;
-//     favorite.style.cursor = 'grabbing'
 
-// })
-// favorite.addEventListener('mouseenter',()=>{
-//     favorite.style.cursor = 'grab'
-    
-// })
-// favorite.addEventListener('mouseup',()=>{
-//     favorite.style.cursor = 'grab'
-// })
-// window.addEventListener('mouseup',()=>{
-//     pressed = false;
-
-// })
-// favorite.addEventListener('mousemove',(e)=>{
-//     if(!pressed) return;
-//     e.preventDefault();
-//     x = e.offsetX
-//     fav.style.left = `${x - startX}px`
-//     checkBoundry()
-// })
-
-// function checkBoundry(){
-//     const body = document.body;
-//     let outer = fav.getBoundingClientRect()
-//     let inner = fav.getBoundingClientRect()
-//     if(parseInt(fav.style.left) > 0){
-//         fav.style.left = '0px';
-//     }
-//     else if (inner.right < outer.right ){
-//         fav.style.left = `-${inner.width - outer.width}px`
-//     }
-// }
-// // const addedMealId = document.getElementById(mealId)
-// // const id = addedMealId.getAttribute('id')
-// // const div = document.getElementsByTagName('button')
-// // div.addEventListener('click',()=>{
-// //     alert('done');
-
-// // })
-// function clear()
-// {
-//     alert('done')
-
-// }
-
-
-// PRACTICE OF PROMISES
-// const btn = document.querySelector('button');
-// const move = (elm,amount,delay)=>{
-//     return new Promise((resolve,reject)=>{
-//         setTimeout(()=>{
-//             const BodyBoundry = document.body.clientWidth;
-//             const elRight = elm.getBoundingClientRect().right
-//             const currLeft = elm.getBoundingClientRect().left
-//             if(elRight + amount > BodyBoundry) {reject()}
-//             else{
-//                 elm.style.transform = `translateX(${currLeft + amount}px)`
-//                 resolve()
-//             }
-//         },delay)
-//     })
-// }
-
-// move(btn,100,500)
-// .then(()=>move(btn,100,500)
-// .then(()=>move(btn,100,500))
-// .then(()=>move(btn,100,500))
-// .then(()=>move(btn,100,500))
-// .then(()=>move(btn,100,500))
-// ).catch(()=>{
-//     console.log('CANT MOVE')
-// })
-
-// function moveX(elm,amount,delay,callback){
-//     setTimeout(()=>{
-//         const BodyBoundry = document.body.clientWidth;
-//         const elRight = elm.getBoundingClientRect().right
-//         const currLeft = elm.getBoundingClientRect().left
-//         if(elRight + amount > BodyBoundry) {
-//             console.log('cant move')
-//         }
-//         else{
-//             elm.style.transform = `translateX(${currLeft + amount}px)`
-            
-//         }
-//     },delay) 
-// }
-
-// moveX(btn,100,1000,
-//     moveX(btn,200,2000,
-//         moveX(btn,300,3000)))
