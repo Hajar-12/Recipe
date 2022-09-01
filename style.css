@@ -262,19 +262,31 @@ body{
   .meal-show{
         margin: 0;
     }
+    .logo{
+        width: 12%;
+    }
+    .random-recipe{
+        margin-top: 2rem;
+        width: 100%;
+    }
+   
 }
 @media screen and (max-width:680px) {
     .yummy{
         padding: .4rem;
         transform: translateY(-105%);
-        margin-left: 4rem;
+        margin-left: 3rem;
         height: 150px;
-        width: 200px;
+        width: 300px;
         font-size: .4rem;
     } 
-   .yummy a{
-        width: 4rem;
-        font-size: .4rem;
+    .yummy div a{
+        width: 7rem;
+        font-size: .7rem;
+    }
+   
+   .search-field{
+    width: 70%;
    }
 
 }
